@@ -1,34 +1,29 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import NoteItemsList from "./components/NoteItemsList";
+import Box from "@mui/material/Box";
+import TopBar from "./components/TopBar";
+import { ThemeProvider } from "@emotion/react";
+import theme from "./theme/theme";
+import NoteEditField from "./components/NoteEditField";
+import { useEffect, useState } from "react";
+import { INoteItem } from "./types/types";
+import newNotes from "./constants/notes";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [notes, setNotes] = useState<INoteItem[]>([]);
+
+  useEffect(() => {
+    setNotes(newNotes);
+  }, []);
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
-  )
+    <ThemeProvider theme={theme}>
+      <Box sx={{ display: "flex" }} className="App">
+        <TopBar />
+        <NoteItemsList notes={notes} drawerWidth={240} />
+      </Box>
+      <NoteEditField note={null} />
+    </ThemeProvider>
+  );
 }
 
-export default App
+export default App;
